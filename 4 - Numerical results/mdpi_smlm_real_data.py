@@ -33,8 +33,7 @@ print("[+] Using {} device".format(device))
 tic = time.time()
 
 # Load, normalise and adapt the type of the stack
-stream = io.imread('real_data_smlm/real_data_smlm.tif')
-# stream = io.imread('mdpi_smlm/MT4.N2.HD-2D-Exp.tif')
+stream = io.imread('mdpi_smlm/real_data_smlm.tif')
 pile = torch.from_numpy(np.array(stream, dtype='float64'))
 pile_max = torch.max(pile)
 pile /= pile_max
