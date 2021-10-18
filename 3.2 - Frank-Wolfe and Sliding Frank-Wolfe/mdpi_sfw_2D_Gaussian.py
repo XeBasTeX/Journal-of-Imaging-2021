@@ -56,8 +56,6 @@ class Mesure2D:
 
 
     def __add__(self, m):
-        '''Hieher : il faut encore régler laddition pour les mesures au même position'''
-        '''ça vaudrait le coup de virer les duplicats'''
         a_new = np.append(self.a, m.a)
         x_new = np.array(list(self.x) + list(m.x))
         return Mesure2D(a_new, x_new)
@@ -294,7 +292,7 @@ def SFW(y, regul=1e-5, nIter=5, mesParIter=False):
         mes_vecteur = np.array([])
     nrj_vecteur = np.zeros(nIter)
     for k in range(nIter):
-        print('\n' + 'Étape numéro ' + str(k))
+        print('\n' + 'Step number ' + str(k))
         eta_V_k = etak(mesure_k, y, X, Y, regul)
         x_star_index = np.unravel_index(np.argmax(np.abs(eta_V_k), axis=None), eta_V_k.shape)
         x_star = np.array(x_star_index)[::-1]/N_ech_y # hierher passer de l'idx à xstar
@@ -303,8 +301,8 @@ def SFW(y, regul=1e-5, nIter=5, mesParIter=False):
         # Condition d'arrêt (étape 4)
         if np.abs(eta_V_k[x_star_index]) < 1:
             nrj_vecteur[k] = mesure_k.energie(X, Y, y, regul)
-            print(f'* Énergie : {nrj_vecteur[k]:.3f}')
-            print("\n\n---- Condition d'arrêt ----")
+            print(f'* Energy: {nrj_vecteur[k]:.3f}')
+            print("\n\n---- Halting condition ----")
             if mesParIter == True:
                 return(mesure_k, nrj_vecteur, mes_vecteur)
             else:
@@ -326,7 +324,7 @@ def SFW(y, regul=1e-5, nIter=5, mesParIter=False):
             mesure_k_demi += Mesure2D(a_k_demi,x_k_demi)
             if __deboggage__:
                print('* a_k_demi : ' + str(np.round(a_k_demi, 2))) 
-               print('* Mesure_k_demi : ' +  str(mesure_k_demi))
+               print('* Measure_k_demi : ' +  str(mesure_k_demi))
 
             # On résout double LASSO non-convexe (étape 8)
             def lasso_double(params):
@@ -384,11 +382,11 @@ def SFW(y, regul=1e-5, nIter=5, mesParIter=False):
             # Graphe et énergie
             # mesure_k.graphe()
             nrj_vecteur[k] = mesure_k.energie(X, Y, y, regul)
-            print(f'* Énergie : {nrj_vecteur[k]:.3f}')
+            print(f'* Energy: {nrj_vecteur[k]:.3f}')
             if mesParIter == True:
                 mes_vecteur = np.append(mes_vecteur, [mesure_k])
             
-    print("\n\n---- Fin de la boucle ----")
+    print("\n\n---- End of the loop ----")
     if mesParIter == True:
         return(mesure_k, nrj_vecteur, mes_vecteur)
     else:
@@ -398,8 +396,8 @@ def SFW(y, regul=1e-5, nIter=5, mesParIter=False):
 def plot_results(m):
     if m.a.size > 0:
         fig = plt.figure(figsize=(15,12))
-        fig.suptitle(f'Reconstruction pour $\lambda = {lambda_regul:.0e}$ ' + 
-                     f'et $\sigma_B = {niveau_bruits:.0e}$', fontsize=20)
+        fig.suptitle(f'Reconstruction for $\lambda = {lambda_regul:.0e}$ ' + 
+                     f'and $\sigma_B = {niveau_bruits:.0e}$', fontsize=20)
 
         plt.subplot(221)
         cont1 = plt.contourf(X, Y, y, 100, cmap='seismic')

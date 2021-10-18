@@ -17,9 +17,6 @@ import matplotlib.pyplot as plt
 from scipy import integrate
 from scipy.stats import wasserstein_distance
 import scipy
-# from mpl_toolkits.mplot3d import Axes3D
-# import cvxpy as cp
-# from sklearn import linear_model
 
 
 np.random.seed(90)
@@ -74,7 +71,6 @@ class Mesure:
 
 
     def __add__(self, m):
-        '''ça vaudrait le coup de virer les duplicats'''
         return Mesure(self.a + m.a, self.x + m.x)
 
 
